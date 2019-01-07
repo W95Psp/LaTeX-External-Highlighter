@@ -80,7 +80,7 @@ function finalize(ename)
 			for i,v in ipairs(codesToPrint) do
 				str = str .. command(cache_path, '"'..v.source_path..'"', '"'..v.pdf_out_path..'"') .. ';';
 			end
-			local fname = cache_path .. "/../render.sh"
+			local fname = cache_path .. "/render.sh"
 			local file = io.open(fname, "w")
 			file:write(str .. "rm " .. fname)
 			file:close()
