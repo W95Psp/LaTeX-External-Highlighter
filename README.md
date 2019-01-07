@@ -19,7 +19,7 @@ Use `emacs` or `vim` (or any external tool) to generate highlighted code, instea
 
 ### Use
 Just use the new `showcode` environment:
-```
+```tex
 \begin{showcode}
   function sample(){
   	hey = 2;
@@ -29,7 +29,7 @@ Just use the new `showcode` environment:
 ```
 
 To specify explicitly a language:
-```
+```tex
 \begin{showcode}
   [lang=html]
   <p>Hello world</p>
@@ -42,7 +42,9 @@ Then compile two times. (needed only when `showcode` envs content changes)
 When calling to `extern_highlighter.setup`, just specify as first argument a custom function generating the command line to be generated. See `extern_highlighter.config_print_emacs` in the code for an example.
 
 ### Other options
-`extern_highlighter.setup(command, def_ext, cache_path, ename)`
+```lua
+extern_highlighter.setup(command, def_ext, cache_path, ename)
+```
 
 ## How it works
 - extract things in `showcode` environments
