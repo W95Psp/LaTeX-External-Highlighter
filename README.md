@@ -1,5 +1,5 @@
 # Highlighter using Emacs or Vim syntax files in LaTeX
-Use `emacs` or `vim` (or any external tool) to generate highlighted code, instead of lstlisting.
+Use `emacs` or `vim` (or any external tool) to generate highlighted code, instead of `lstlisting`.
 
 ## How to use
 ### Prepare
