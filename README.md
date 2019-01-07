@@ -6,7 +6,6 @@ Use `emacs` or `vim` (or any external tool) to generate highlighted code, instea
  - Use LuaTeX
  - Configure LuaTeX so that Lua scripts can use filesystem: `--shell-escape`
  - Add `extern_highlighter.lua` somewhere near your LaTeX sources (i.e. create a `lua` subdirectory and put it in `./lua/extern_highlighter.lua`)
- - Create a `highlighter_cache` directory just aside your main `tex` file
  - Before your `\begin{document}` put: (here, it is configured to consider source as Javascript by default, just change `"js"` for other behaviours)
  ```tex
 \directlua{extern_highlighter = require "lua/extern_highlighter"}

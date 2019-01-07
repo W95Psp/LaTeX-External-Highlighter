@@ -32,6 +32,7 @@ function extern_highlighter.setup(command, def_ext, cache_path, ename)
 	ename 		= ename	  or "showcode"
 	command		= command or extern_highlighter.config_print_emacs
 	cache_path 	= cache_path or lfs.currentdir().."/highlighter_cache/"
+	lfs.mkdir(cache_path)
 	_list_envs[ename] = {def_ext = def_ext, cache_path = cache_path, useful_files = {}, command = command, codesToPrint = {}}
 	local a = [[\directlua{extern_highlighter.start_recording("]] .. ename .. [[")}]]
 	local b = [[\directlua{extern_highlighter.stop_recording("]] .. ename .. [[", extern_highlighter.showcodeEnv)}]]
