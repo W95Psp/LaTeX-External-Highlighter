@@ -15,16 +15,23 @@ end
 _list_envs = {}
 
 -- generic configuration that invokes emacs to highlight a file
-function extern_highlighter.config_print_emacs(cache_path, source_path, pdf_out_path)
+function extern_highlighter.config_print_emacs(cache_path, source_path, pdf_out_path, ext)
 	local tmpPath = cache_path.."/tmp.html"
 	local toTmp = [[emacs "]]..source_path..[[" --eval="(dolist (i custom-enabled-themes) (disable-theme i))" --eval="(htmlfontify-buffer)" --eval="(write-file \"]]..tmpPath..[[\")" --eval="(kill-emacs)"]]
 	return toTmp.."; wkhtmltopdf \""..tmpPath.."\" "..pdf_out_path.."; rm \""..tmpPath.."\"; pdfcrop "..pdf_out_path.." "..pdf_out_path
 end
 
-
 -- specific configuration using some /opt/print-fst.sh script
-function extern_highlighter.config_print_emacs_fst(cache_path, source_path, pdf_out_path)
+function extern_highlighter.config_print_emacs_fst(cache_path, source_path, pdf_out_path, ext)
 	return "bash /opt/print-fst.sh "..source_path.." | wkhtmltopdf - "..pdf_out_path.."; pdfcrop "..pdf_out_path.." "..pdf_out_path
+end
+
+function extern_highlighter.config_print_emacs_ofst(cache_path, source_path, pdf_out_path, ext)
+   if ext == "fst" then
+      extern_highlighter.config_print_emacs_fst(cache_path, source_path, pdf_out_path, ext)
+   else
+      extern_highlighter.config_print_emacs(cache_path, source_path, pdf_out_path, ext)
+   end
 end
 
 function extern_highlighter.setup(command, def_ext, cache_path, ename)
@@ -64,9 +71,9 @@ function includeCode(ename, str, ext)
 	end
 
 	if file_exists(path .. pdf) then
-		tex.print("\\includegraphics{"..path.."/" .. pdf .. "}")
+		tex.print("\\includegraphics{\\detokenize{"..path.."/" .. pdf .. "}}")
 	else
-		codesToPrint[#codesToPrint + 1] = {source_path = path .. source, pdf_out_path = path .. pdf}
+		codesToPrint[#codesToPrint + 1] = {source_path = path .. source, pdf_out_path = path .. pdf, ext = ext}
 		tex.print([[{\color{red}\Huge Source processed: recompile me!}]])
 	end
 end
@@ -79,7 +86,7 @@ function finalize(ename)
 		if #codesToPrint > 0 then
 			local str = ""
 			for i,v in ipairs(codesToPrint) do
-				str = str .. command(cache_path, '"'..v.source_path..'"', '"'..v.pdf_out_path..'"') .. ';';
+				str = str .. command(cache_path, '"'..v.source_path..'"', '"'..v.pdf_out_path..'"', v.ext) .. ';';
 			end
 			local fname = cache_path .. "/render.sh"
 			local file = io.open(fname, "w")
