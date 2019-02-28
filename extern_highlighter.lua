@@ -28,9 +28,9 @@ end
 
 function extern_highlighter.config_print_emacs_ofst(cache_path, source_path, pdf_out_path, ext)
    if ext == "fst" then
-      extern_highlighter.config_print_emacs_fst(cache_path, source_path, pdf_out_path, ext)
+      return extern_highlighter.config_print_emacs_fst(cache_path, source_path, pdf_out_path, ext)
    else
-      extern_highlighter.config_print_emacs(cache_path, source_path, pdf_out_path, ext)
+      return extern_highlighter.config_print_emacs(cache_path, source_path, pdf_out_path, ext)
    end
 end
 
